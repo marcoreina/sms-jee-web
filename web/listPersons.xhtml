@@ -18,10 +18,14 @@
             </f:facet>
         </p:ajaxStatus>
         
-        <h:form prependId="false">
-            <p:growl id="messages" showDetail="true"/>
+        <h:form prependId="false" id="personForm">
             
-            <p:dataTable value="#{personBean.persons}" var="person" editable="true">
+            <p:growl id="messages" showDetail="true"/>
+            <p:messages />
+            
+            <p:dataTable id="persons" value="#{personBean.persons}" var="person" editable="true" rowKey="#{person.idPerson}"
+                         selection="#{personBean.selectedPerson}" selectionMode="single">
+                
                 <f:facet name="header">
                     List of Persons
                 </f:facet>
@@ -61,13 +65,50 @@
                 </p:column>
                 
                 <f:facet name="footer">
-                    <h:commandButton value="Return" action="index"/>
+                    <p:commandButton value="Return" action="index" ajax="false"/>
+                    <p:spacer height="5px"/>
+                    <p:commandButton value="Add Person" actionListener="#{personBean.restartSelectedPerson}" oncomplete="PF('personDialog').show();"
+                                     update="persons">
+                        <p:ajax event="dialogReturn" update="persons"/>
+                    </p:commandButton>
                 </f:facet>
                 
                 <p:ajax event="rowEdit" listener="#{personBean.editListener}">
                 </p:ajax>
                 
             </p:dataTable>
+            
+            <p:contextMenu for="persons">
+                <p:menuitem value="Remove" update="persons" icon="ui-icon-close" actionListener="#{personBean.deletePerson}" ajax="false"/>
+            </p:contextMenu>
+        </h:form>
+        
+        <h:form id="dialogForm" prependId="false">
+            <p:dialog header="Add Person" widgetVar="personDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="personDetail" style="text-align: center">
+                    <p:panelGrid columns="2" columnClasses="label,value">
+                        <h:outputText value="Name:"/>
+                        <h:inputText value="#{personBean.selectedPerson.name}"/>
+                        
+                        <h:outputText value="Father Name:"/>
+                        <h:inputText value="#{personBean.selectedPerson.fatherName}"/>
+                        
+                        <h:outputText value="Mother Name:"/>
+                        <h:inputText value="#{personBean.selectedPerson.motherName}"/>
+
+                        <h:outputText value="Email:"/>
+                        <h:inputText value="#{personBean.selectedPerson.email}"/>
+
+                        <h:outputText value="Phone:"/>
+                        <h:inputText value="#{personBean.selectedPerson.phone}"/>
+                        
+                        <f:facet name="footer">
+                            <h:commandButton value="Add" actionListener="#{personBean.addPerson}"/>
+                        </f:facet>
+                        
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
         </h:form>
     </h:body>
 </html>

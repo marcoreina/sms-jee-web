@@ -36,6 +36,37 @@
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
+                <p:column headerText="Father Name">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{person.fatherName}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText value="#{person.fatherName}"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Email">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{person.email}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText value="#{person.email}"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Options" style="width: 50px">
+                    <p:rowEditor />
+                </p:column>
+                
+                <f:facet name="footer">
+                    <h:commandButton value="Return" action="index"/>
+                </f:facet>
+                
+                <p:ajax event="rowEdit" listener="#{personBean.editListener}">
+                </p:ajax>
+                
             </p:dataTable>
         </h:form>
     </h:body>

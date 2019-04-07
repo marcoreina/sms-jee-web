@@ -9,9 +9,11 @@ import com.reina.marco.sms.domain.Person;
 import com.reina.marco.sms.eis.PersonDao;
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
+import javax.jws.WebService;
 
 @Stateless
-public class PersonServiceImpl implements PersonServiceRemote, PersonService {
+@WebService(endpointInterface = "com.reina.marco.sms.service.PersonServiceWS")
+public class PersonServiceImpl implements PersonServiceRemote, PersonService, PersonServiceWS {
     
     @Resource
     private SessionContext context;
